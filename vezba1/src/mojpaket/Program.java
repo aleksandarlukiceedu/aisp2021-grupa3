@@ -21,6 +21,5 @@ public class Program {
             default:
                 System.out.println("Default");
         }
-
     }
 }
