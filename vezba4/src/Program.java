@@ -2,14 +2,22 @@ import list.LinkedList;
 
 public class Program {
     public static void main(String[] args) {
-        LinkedList l = new LinkedList();
-        l.addFirst(1);
-        l.addLast(2);
-        l.addFirst(3);
-        l.add(1, 4);
+        LinkedList<String> l = new LinkedList<>();
+        l.addFirst("1");
+        l.addLast("2");
+        l.addFirst("3");
+        l.add(1, "4");
 
-        for (int i = 0; i < l.size(); i++) {
-            System.out.println(l.get(i));
+
+        String x = l.getFirst() + l.getLast();
+        System.out.println(x);
+        l.remove("4");
+        System.out.println();
+        System.out.println(l.indexOf("14"));
+
+        l.clear();
+        for (String s: l) {
+            System.out.println(s);
         }
     }
 }
