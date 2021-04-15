@@ -12,6 +12,58 @@ public class HashMap<TKey, TValue> {
         this.entries = new Entry[capacity];
     }
 
+    public TValue get(TKey key){
+        return this.getOrDefault(key, null);
+    }
+
+    public TValue getOrDefault(TKey key, TValue defaultValue){
+        int targetBucket = hash(key);
+        Entry<TKey, TValue> currentEntry = this.entries[targetBucket];
+
+        if(currentEntry != null){
+
+            while (currentEntry != null){
+                if(this.equalKeys(currentEntry.getKey(), key)){
+                    return currentEntry.getValue();
+                }
+                currentEntry = currentEntry.getNext();
+            }
+        }
+        return defaultValue;
+    }
+
+    public boolean containsKey(TKey key){
+        int targetBucket = hash(key);
+        Entry<TKey, TValue> currentEntry = this.entries[targetBucket];
+
+        if(currentEntry != null){
+            while (currentEntry != null){
+                if(this.equalKeys(currentEntry.getKey(), key)){
+                    return true;
+                }
+                currentEntry = currentEntry.getNext();
+            }
+        }
+        return false;
+    }
+
+    public boolean containsValue(TValue value){
+        for (Entry<TKey, TValue> entry: this.entries) {
+            if(entry != null){
+                Entry<TKey, TValue> currentEntry = entry;
+
+                while (currentEntry != null){
+                    if(currentEntry.getValue().equals(value)){
+                        return true;
+                    }
+                    currentEntry = currentEntry.getNext();
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void put(TKey key, TValue value){
         int targetBucket = hash(key);
 
@@ -37,6 +89,30 @@ public class HashMap<TKey, TValue> {
                 Entry<TKey, TValue> entry = new Entry<>(key, value);
                 currentEntry.setNext(entry);
                 mapSize++;
+            }
+        }
+    }
+
+    public void remove(TKey key){
+        int targetBucket = hash(key);
+
+        if(this.entries[targetBucket] != null){
+            Entry<TKey, TValue> previousEntry = null;
+            Entry<TKey, TValue> currentEntry = this.entries[targetBucket];
+
+            while (currentEntry != null){
+                if(this.equalKeys(currentEntry.getKey(), key)){
+                    if(previousEntry == null){
+                        this.entries[targetBucket] = null;
+                    }
+                    else{
+                        previousEntry.setNext(currentEntry.getNext());
+                    }
+                    mapSize--;
+                }
+
+                previousEntry = currentEntry;
+                currentEntry = currentEntry.getNext();
             }
         }
     }
